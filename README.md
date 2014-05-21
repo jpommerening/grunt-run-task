@@ -15,11 +15,12 @@ to run the Grunt task you want to test with arbitrary configuration.
 If you're using BDD it could look like this:
 
 ```javascript
-
 var grunt = require('grunt');
-var runTask = require('grunt-run-task').grunt(grunt);
+var runTask = require('grunt-run-task');
 
 describe('my awesome Grunt task', function () {
+  runTask.loadTasks('tasks');
+
   describe('when using the default options', function () {
     var task = runTask.task('awesome_task', {
       options: {},

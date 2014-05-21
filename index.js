@@ -1,5 +1,12 @@
+var grunt = require('grunt');
+var multiTasks = [];
 
-var grunt;
+grunt.registerMultiTask = (function (obj, method) {
+  return function(name) {
+    multiTasks.push(name);
+    method.apply(obj, arguments);
+  };
+})(grunt.task, grunt.task.registerMultiTask);
 
 function Task(name, config) {
   if (!(this instanceof Task)) {
@@ -8,19 +15,52 @@ function Task(name, config) {
 
   this.name = name;
   this.config = config;
-  this.multi = true;
+  this.multi = multiTasks.indexOf(name) >= 0;
 }
 
 Task.prototype.run = function (/* [arguments...], [done] */) {
-  var args;
+  var args = [].slice.apply(arguments);
+  var task = this.name;
   var done;
+
+  if (typeof args[args.length-1] === 'function') {
+    done = args.pop();
+  }
+
+  grunt.task.options( {
+    error: function( err ) {
+      done( err );
+    },
+    done: done
+  } );
+  grunt.initConfig( {} );
+
+  if (this.multi) {
+    task += ':default';
+    grunt.config(this.name, {
+      default: this.config
+    });
+  } else {
+    grunt.config(this.name, this.config);
+  }
+
+  if (args.length > 0) {
+    task += ':' + args.join(':');
+  }
+
+  grunt.task.run(task);
+  grunt.task.start({ asyncDone: true });
 
   return this;
 };
 
-task.prototype.clean = function(/* [files...], [done] */) {
-  var files;
+Task.prototype.clean = function(/* [files...], [done] */) {
+  var files = [].slice.apply(arguments);
   var done;
+
+  if (typeof files[files.length-1] === 'function') {
+    done = files.pop();
+  }
 
   return this;
 };
@@ -35,9 +75,7 @@ runTask.task = function create(name, config) {
   return new Task(name, config);
 };
 
-runTask.grunt = function(g) {
-  grunt = g;
-  return runTask;
-};
+runTask.loadTasks = grunt.loadTasks.bind(grunt);
+runTask.loadNpmTasks = grunt.loadNpmTasks.bind(grunt);
 
 module.exports = runTask;

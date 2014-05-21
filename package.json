@@ -15,5 +15,8 @@
   },
   "bugs": {
     "url": "https://github.com/jpommerening/grunt-run-task/issues"
+  },
+  "dependencies": {
+    "grunt": "~0.4.4"
   }
 }
