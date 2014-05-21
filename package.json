@@ -1,0 +1,19 @@
+{
+  "name": "grunt-run-task",
+  "version": "0.0.1",
+  "description": "Run Grunt tasks in you tests, so you can test them",
+  "license": "MIT",
+  "homepage": "https://github.com/jpommerening/grunt-run-task",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jpommerening/grunt-run-task.git"
+  },
+  "author": {
+    "name": "Jonas Pommerening",
+    "email": "jonas.pommerening@gmail.com",
+    "url": "https://npmjs.org/~jpommerening"
+  },
+  "bugs": {
+    "url": "https://github.com/jpommerening/grunt-run-task/issues"
+  }
+}
