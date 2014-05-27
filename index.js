@@ -57,16 +57,17 @@ Task.prototype.run = function (/* [arguments...], done */) {
   var args = this.args.concat([].slice.apply(arguments));
   var task = this;
 
+  if (task.target) {
+    args.unshift(task.target);
+  } else if (task.multi) {
+    args.unshift('');
+  }
+  args.unshift(task.name);
+
   function run(done) {
     var outStream = task.grunt.log.outStream;
     var config = task.grunt.config.get(task.name);
 
-    if (task.target) {
-      args.unshift(task.target);
-    } else if (task.multi) {
-      args.unshift('');
-    }
-    args.unshift(task.name);
 
     task.target = task.multi ? (tark.target || Object.keys(config)[0] || 'default') : null;
     task.config = task.multi ? config[task.target] : config;

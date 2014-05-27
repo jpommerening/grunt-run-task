@@ -28,8 +28,8 @@ describe('my awesome Grunt task', function () {
       dest: 'tmp/src.out.js'
     });
 
-    beforeEach(task.run);
-    afterEach(task.clean);
+    beforeEach(task.run());
+    afterEach(task.clean());
 
     it('does awesome stuff', function() {
       grunt.file.exists(task.config.dest);
