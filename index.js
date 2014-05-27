@@ -123,8 +123,13 @@ runTask.task = function create(name, config) {
   return new Task(name, config);
 };
 
-runTask.initConfig = grunt.initConfig.bind(grunt);
-runTask.loadTasks = grunt.loadTasks.bind(grunt);
-runTask.loadNpmTasks = grunt.loadNpmTasks.bind(grunt);
+[ 'initConfig',
+  'registerTask',
+  'registerMultiTask',
+  'renameTask',
+  'loadTasks',
+  'loadNpmTasks' ].forEach(function (fn) {
+  runTask[fn] = grunt[fn].bind(grunt);
+};
 
 module.exports = runTask;

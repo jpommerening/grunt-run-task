@@ -40,27 +40,62 @@ describe('my awesome Grunt task', function () {
 
 ## API
 
-### runTask.grunt(grunt)
-- grunt `Object` the grunt instance to use for running tasks.
+### runTask(name, config, done)
+Run the given task immediately with the given config. Call the callback,
+once the task has finished.
 
-### runTask(name, config, [multi], done)
+#### Options
+
 - name `String` The name of the task to run
 - config `Object` The configuration to use for the task
 - multi `Boolean` When specified, don't try to guess the kind of task, instead
   assume it is a multi-task if `true` or a regular task if `false`
+
+#### Example
+
+Run the [`jshint`](https://github.com/gruntjs/grunt-contrib-jshint) task.
+
+```js
+runTask('jshint', {
+  // JSHint is a multi-task, setup the "default" target
+  default: {
+    options: {},
+    files: [ '**/*.js' ]
+  }
+}, function (err, task) {
+  if (err) {
+    // The task did encounter an error
+  }
+});
+```
 
 ### runTask.task(name, config, [multi])
 - name `String` The name of the task to run
 - config `Object` The configuration to use for the task
-- multi `Boolean` When specified, don't try to guess the kind of task, instead
-  assume it is a multi-task if `true` or a regular task if `false`
 - return: a `Task` object
+
+### runTask.initConfig(configObject)
+_Wrapper for the [`grunt.initConfig`](http://gruntjs.com/api/grunt.config#grunt.config.init) method._
+
+### runTask.registerTask(taskName, ...)
+_Wrapper for the [`grunt.registerTask`](http://gruntjs.com/api/grunt.task#grunt.task.registerTask) method._
+
+### runTask.registerMultiTask(taskName, ...)
+_Wrapper for the [`grunt.loadTasks`](http://gruntjs.com/api/grunt.task#grunt.task.registerMultiTask) method._
+
+### runTask.loadTasks(tasksPath)
+_Wrapper for the [`grunt.loadTasks`](http://gruntjs.com/api/grunt.task#grunt.task.loadtasks) method._
+
+### runTask.loadNpmTasks(pluginName)
+_Wrapper for the [`grunt.loadTasks`](http://gruntjs.com/api/grunt.task#grunt.task.loadtasks) method._
 
 ### Class: Task
 
 #### task.name
 #### task.multi
+#### task.target
 #### task.config
+#### task.files
 
 #### task.run([arguments...], done)
 
