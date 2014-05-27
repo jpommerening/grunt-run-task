@@ -34,12 +34,17 @@ function Task(name, config) {
     return new Task(name, config);
   }
 
+  var args = name.split(':');
+
   this.grunt = grunt;
   this.grunt.log = new log.Log({muted: true});
   this.grunt.verbose = this.grunt.log.verbose;
-  this.name = name;
-  this.files = [];
+  this.name = args.shift();
   this.multi = multiTasks.indexOf(name) >= 0;
+  this.target = this.multi ? args.shift() : null;
+  this.args = args;
+  this.config = {};
+  this.files = [];
   this.stdout = null;
 
   var c = {};
@@ -49,19 +54,23 @@ function Task(name, config) {
 }
 
 Task.prototype.run = function (/* [arguments...], done */) {
-  var args = [].slice.apply(arguments);
+  var args = this.args.concat([].slice.apply(arguments));
   var task = this;
 
-  if (task.multi && args.length === 0) {
-    args.push('default');
-  }
-
   function run(done) {
-    task.target = task.multi ? args[0] : null;
-    task.config = task.grunt.config.get(task.multi ? [task.name, task.target] : task.name);
-    task.files = task.grunt.task.normalizeMultiTaskFiles(task.config);
-
     var outStream = task.grunt.log.outStream;
+    var config = task.grunt.config.get(task.name);
+
+    if (task.target) {
+      args.unshift(task.target);
+    } else if (task.multi) {
+      args.unshift('');
+    }
+    args.unshift(task.name);
+
+    task.target = task.multi ? (tark.target || Object.keys(config)[0] || 'default') : null;
+    task.config = task.multi ? config[task.target] : config;
+    task.files = task.grunt.task.normalizeMultiTaskFiles(task.config);
 
     task.grunt.log.options.outStream = new BufferStream(function (err, data) {
       if (err) {
@@ -84,7 +93,8 @@ Task.prototype.run = function (/* [arguments...], done */) {
       }
     });
 
-    task.grunt.task.run(task.name + ':' + args.join(':'));
+    console.log(args.join(':'), config);
+    task.grunt.task.run(args.join(':'));
     task.grunt.task.start({asyncDone: true});
   }
 
@@ -130,6 +140,6 @@ runTask.task = function create(name, config) {
   'loadTasks',
   'loadNpmTasks' ].forEach(function (fn) {
   runTask[fn] = grunt[fn].bind(grunt);
-};
+});
 
 module.exports = runTask;

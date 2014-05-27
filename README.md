@@ -42,24 +42,21 @@ describe('my awesome Grunt task', function () {
 
 ### runTask(name, config, done)
 Run the given task immediately with the given config. Call the callback,
-once the task has finished.
+once the task has finished. Returns the created [Task](#class-task) instance.
 
 #### Options
-
-- name `String` The name of the task to run
-- config `Object` The configuration to use for the task
-- multi `Boolean` When specified, don't try to guess the kind of task, instead
-  assume it is a multi-task if `true` or a regular task if `false`
+- name `String` The name of the task to run. This may include colon-separated
+  arguments to pass the the task, or, in the case of multi-tasks, the name of
+  the target to run.
+- config `Object` The configuration to use for the task.
 
 #### Example
-
 Run the [`jshint`](https://github.com/gruntjs/grunt-contrib-jshint) task.
 
 ```js
-runTask('jshint', {
+runTask('jshint:default', {
   // JSHint is a multi-task, setup the "default" target
   default: {
-    options: {},
     files: [ '**/*.js' ]
   }
 }, function (err, task) {
@@ -69,10 +66,34 @@ runTask('jshint', {
 });
 ```
 
-### runTask.task(name, config, [multi])
-- name `String` The name of the task to run
-- config `Object` The configuration to use for the task
-- return: a `Task` object
+### runTask.task(name, [config])
+Return a new[Task](#class-task) object that can be used to run the given task.
+
+#### Options
+- name `String` The name of the task to run. This may include colon-separated
+  arguments to pass the the task, or, in the case of multi-tasks, the name of
+  the target to run.
+- config `Object` The configuration to use for the task.
+
+#### Example
+Run the [`uglify`](https://github.com/gruntjs/grunt-contrib-uglify) task,
+and cleanup created files afterwards.
+
+```js
+var task = runTask.task('uglify', {
+  default: {
+    files: {
+      'build/app.js': [ '**/*.js' ]
+    }
+  }
+});
+
+task.run('default', function (err) {
+  task.clean(function (err) {
+    // Done
+  });
+});
+```
 
 ### runTask.initConfig(configObject)
 _Wrapper for the [`grunt.initConfig`](http://gruntjs.com/api/grunt.config#grunt.config.init) method._
@@ -97,6 +118,10 @@ _Wrapper for the [`grunt.loadTasks`](http://gruntjs.com/api/grunt.task#grunt.tas
 #### task.config
 #### task.files
 
-#### task.run([arguments...], done)
+#### task.run([arguments...], [done])
+- arguments `String` Any arguments to pass to the task, similar to what you
+  would specify on the command line, by appending colon-separated options to
+  the task you wish to run.
+- done `Function` A callback to be called once the task has finished.
 
-#### task.clean(done)
+#### task.clean([done])
