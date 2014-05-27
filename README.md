@@ -45,7 +45,7 @@ Run the given task immediately with the given config. Call the callback,
 once the task has finished. Returns the created [Task](#class-task) instance.
 
 #### Options
-- name `String` The name of the task to run. This may include colon-separated
+-  name `String` The name of the task to run. This may include colon-separated
   arguments to pass the the task, or, in the case of multi-tasks, the name of
   the target to run.
 - config `Object` The configuration to use for the task.
@@ -65,9 +65,9 @@ runTask('jshint:default', {
   }
 });
 ```
-
+ 
 ### runTask.task(name, [config])
-Return a new[Task](#class-task) object that can be used to run the given task.
+Return a new [Task](#class-task) object that can be used to run the given task.
 
 #### Options
 - name `String` The name of the task to run. This may include colon-separated
@@ -119,9 +119,16 @@ _Wrapper for the [`grunt.loadTasks`](http://gruntjs.com/api/grunt.task#grunt.tas
 #### task.files
 
 #### task.run([arguments...], [done])
+Run the task with the given arguments.
+
+**Options**
 - arguments `String` Any arguments to pass to the task, similar to what you
   would specify on the command line, by appending colon-separated options to
   the task you wish to run.
 - done `Function` A callback to be called once the task has finished.
 
 #### task.clean([done])
+Clean up the task's `dest` files.
+
+**Options**
+- done `Function` A callback to be called once the task has finished.
