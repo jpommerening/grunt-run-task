@@ -17,6 +17,7 @@
     "url": "https://github.com/jpommerening/grunt-run-task/issues"
   },
   "dependencies": {
-    "grunt": "~0.4.4"
+    "grunt": "~0.4.4",
+    "grunt-legacy-log": "~0.1.1"
   }
 }
