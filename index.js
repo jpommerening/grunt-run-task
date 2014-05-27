@@ -65,36 +65,41 @@ Task.prototype.run = function (/* [arguments...], done */) {
   args.unshift(task.name);
 
   function run(done) {
+    var warn = task.grunt.fail.warn;
+    var fatal = task.grunt.fail.fatal;
     var outStream = task.grunt.log.outStream;
     var config = task.grunt.config.get(task.name);
+    var finished = false;
 
+    function end() {
+      if (!finished) {
+        end = true;
+
+        task.grunt.log.options.outStream.end();
+        task.grunt.log.options.outStream = outStream;
+        task.grunt.fail.warn = warn;
+        task.grunt.fail.fatal = fatal;
+
+        done.apply(this, arguments);
+      }
+    }
 
     task.target = task.multi ? (tark.target || Object.keys(config)[0] || 'default') : null;
     task.config = task.multi ? config[task.target] : config;
     task.files = task.grunt.task.normalizeMultiTaskFiles(task.config);
 
     task.grunt.log.options.outStream = new BufferStream(function (err, data) {
-      if (err) {
-        return done(err);
-      }
       task.stdout = data;
     });
 
+    task.grunt.fail.warn = end;
+    task.grunt.fail.fatal = end;
+
     task.grunt.task.options({
-      error: function (err) {
-        console.log('error');
-        console.log(task.stdout);
-        task.grunt.log.options.outStream.end();
-        task.grunt.log.options.outStream = outStream;
-        done(err);
-      },
-      done: function () {
-        console.log('done');
-        done()
-      }
+      error: end,
+      done: end
     });
 
-    console.log(args.join(':'), config);
     task.grunt.task.run(args.join(':'));
     task.grunt.task.start({asyncDone: true});
   }
@@ -104,6 +109,31 @@ Task.prototype.run = function (/* [arguments...], done */) {
     return this;
   } else {
     return run;
+  }
+};
+
+Task.prototype.fail = function() {
+  var args = [].slice.apply(arguments);
+  var task = this;
+
+  function expectError(done) {
+    return function (err) {
+      if (!err) {
+        done(new Error('Expected ' + task.name + ' task to fail'));
+      } else {
+        done(null, err);
+      }
+    };
+  }
+
+  if (typeof args[args.length-1] === 'function') {
+    args.push(expectError(args.pop()));
+    return task.run.apply(task, args);
+  } else {
+    return function(done) {
+      args.push(expectError(done));
+      task.run.apply(task, args);
+    };
   }
 };
 

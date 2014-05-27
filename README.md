@@ -46,7 +46,7 @@ once the task has finished. Returns the created [Task](#class-task) instance.
 
 #### Options
 -  name `String` The name of the task to run. This may include colon-separated
-  arguments to pass the the task, or, in the case of multi-tasks, the name of
+  arguments to pass to the task, or, in the case of multi-tasks, the name of
   the target to run.
 - config `Object` The configuration to use for the task.
 
@@ -54,6 +54,7 @@ once the task has finished. Returns the created [Task](#class-task) instance.
 Run the [`jshint`](https://github.com/gruntjs/grunt-contrib-jshint) task.
 
 ```js
+runTask.loadNpmTasks('grunt-contrib-jshint');
 runTask('jshint:default', {
   // JSHint is a multi-task, setup the "default" target
   default: {
@@ -71,7 +72,7 @@ Return a new [Task](#class-task) object that can be used to run the given task.
 
 #### Options
 - name `String` The name of the task to run. This may include colon-separated
-  arguments to pass the the task, or, in the case of multi-tasks, the name of
+  arguments to pass to the task, or, in the case of multi-tasks, the name of
   the target to run.
 - config `Object` The configuration to use for the task.
 
@@ -80,6 +81,7 @@ Run the [`uglify`](https://github.com/gruntjs/grunt-contrib-uglify) task,
 and cleanup created files afterwards.
 
 ```js
+runTask.loadNpmTasks('grunt-contrib-uglify');
 var task = runTask.task('uglify', {
   default: {
     files: {
@@ -119,7 +121,22 @@ _Wrapper for the [`grunt.loadTasks`](http://gruntjs.com/api/grunt.task#grunt.tas
 #### task.files
 
 #### task.run([arguments...], [done])
-Run the task with the given arguments.
+Run the task with the given arguments. If the last argument is a function,
+run the task immediately and call the function once the task finished.
+Otherwise, return a function expecting a single parameter, the callback,
+that actually runs the task.
+
+**Options**
+- arguments `String` Any arguments to pass to the task, similar to what you
+  would specify on the command line, by appending colon-separated options to
+  the task you wish to run.
+- done `Function` A callback to be called once the task has finished.
+
+#### task.fail([arguments...], [done])
+Run the task with the given arguments, but expect it to fail. If the last
+argument is a function, run the task immediately and call the function once
+the task finished.  Otherwise, return a function expecting a single parameter,
+the callback, that actually runs the task.
 
 **Options**
 - arguments `String` Any arguments to pass to the task, similar to what you
