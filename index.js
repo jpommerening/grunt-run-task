@@ -1,11 +1,11 @@
 var grunt = require('grunt');
 var log = require('grunt-legacy-log');
-var Writable = require('stream').Writable;
-var inherits = require('util').inherits;
+var stream = require('readable-stream');
+var inherits = require('inherits');
 var multiTasks = [];
 
 function BufferStream(done, options) {
-  Writable.call(this, options);
+  stream.Writable.call(this, options);
 
   var data = [];
 
@@ -20,7 +20,7 @@ function BufferStream(done, options) {
     done(err);
   });
 }
-inherits(BufferStream, Writable);
+inherits(BufferStream, stream.Writable);
 
 grunt.registerMultiTask = (function (obj, method) {
   return function (name) {
