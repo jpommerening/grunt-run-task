@@ -67,13 +67,13 @@ Task.prototype.run = function (/* [arguments...], done */) {
   function run(done) {
     var warn = task.grunt.fail.warn;
     var fatal = task.grunt.fail.fatal;
-    var outStream = task.grunt.log.outStream;
+    var outStream = task.grunt.log.options.outStream;
     var config = task.grunt.config.get(task.name);
     var finished = false;
 
     function end() {
       if (!finished) {
-        end = true;
+        finished = true;
 
         task.grunt.log.options.outStream.end();
         task.grunt.log.options.outStream = outStream;

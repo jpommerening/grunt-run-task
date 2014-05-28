@@ -17,10 +17,17 @@
   "bugs": {
     "url": "https://github.com/jpommerening/grunt-run-task/issues"
   },
+  "scripts": {
+    "test": "mocha --reporter spec test.js"
+  },
   "dependencies": {
     "grunt": "~0.4.4",
     "grunt-legacy-log": "~0.1.1",
     "readable-stream": "~1.1.13",
     "inherits": "~2.0.1"
+  },
+  "devDependencies": {
+    "mocha": "~1.19.0",
+    "expect.js": "~0.3.1"
   }
 }
