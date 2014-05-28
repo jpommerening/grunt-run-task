@@ -21,9 +21,6 @@ describe('grunt-run-task', function () {
     var task = runTask.task('task', {
       options: {
         test: true
-      },
-      files: {
-        'test/test.js': [ '*.js' ]
       }
     });
 
@@ -45,14 +42,18 @@ describe('grunt-run-task', function () {
 
         theTask.spy(function () {
           called = true;
+          expect(this.name).to.equal('task');
+          expect(this.target).to.be(undefined);
+          expect(this.args).to.eql(['arg']);
+          expect(this.files).to.be(undefined);
+          expect(this.options()).to.eql({
+            test: true
+          });
         });
 
-        task.run(function (err) {
-          if (err) {
-            return done(err);
-          }
+        task.run('arg', function (err) {
           expect(called).to.equal(true);
-          done();
+          done(err);
         });
       });
 
@@ -61,31 +62,55 @@ describe('grunt-run-task', function () {
 
         theTask.spy(function () {
           called = true;
+          expect(this.name).to.equal('multi-task');
+          expect(this.target).to.equal('default');
+          expect(this.args).to.eql(['arg']);
+          expect(this.files).to.not.be(undefined);
+          expect(this.options()).to.eql({
+            test: true
+          });
         });
 
-        multiTask.run(function (err) {
-          if (err) {
-            return done(err);
-          }
+        multiTask.run('arg', function (err) {
           expect(called).to.equal(true);
-          done();
-        });
-      });
-
-      it('passes arguments to the task function', function (done) {
-        theTask.spy(function () {
-          expect([].slice.apply(arguments)).to.eql(['test']);
-        });
-
-        task.run('test', function (err) {
-          if (err) {
-            return done(err);
-          }
-          done();
+          done(err);
         });
       });
 
     });
+
+    describe('.fail([arguments], [done])', function () {
+
+      it('runs tasks', function (done) {
+        var called = false;
+
+        theTask.spy(function () {
+          called = true;
+          throw new Error('This was expected');
+        });
+
+        task.fail('arg', function (err) {
+          expect(called).to.equal(true);
+          done(err);
+        });
+      });
+
+      it('runs multi tasks', function (done) {
+        var called = false;
+
+        theTask.spy(function () {
+          called = true;
+          throw new Error('This was expected');
+        });
+
+        multiTask.fail('arg', function (err) {
+          expect(called).to.equal(true);
+          done(err);
+        });
+      });
+
+    });
+
   });
 
 });

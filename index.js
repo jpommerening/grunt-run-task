@@ -47,10 +47,7 @@ function Task(name, config) {
   this.files = [];
   this.stdout = null;
 
-  var c = {};
-  c[this.name] = config || {};
-
-  this.grunt.initConfig(c);
+  this.grunt.config.set(this.name, config || {});
 }
 
 Task.prototype.run = function (/* [arguments...], done */) {
