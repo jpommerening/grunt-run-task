@@ -15,6 +15,7 @@ to run the Grunt task you want to test with arbitrary configuration.
 If you're using BDD it could look like this:
 
 ```javascript
+var assert = require('assert');
 var grunt = require('grunt');
 var runTask = require('grunt-run-task');
 
@@ -32,7 +33,7 @@ describe('my awesome Grunt task', function () {
     afterEach(task.clean());
 
     it('does awesome stuff', function() {
-      grunt.file.exists(task.config.dest);
+      assert(grunt.file.exists(task.files[0].dest));
     });
   });
 });
@@ -114,11 +115,14 @@ _Wrapper for the [`grunt.loadTasks`](http://gruntjs.com/api/grunt.task#grunt.tas
 
 ### Class: Task
 
-#### task.name
-#### task.multi
-#### task.target
-#### task.config
-#### task.files
+#### Properties
+- name `String` The name of the task.
+- multi `Boolean` Whether this is a multi-task.
+- target `String` If the task is a multi-task, this is the target name it was
+  started with.
+- args `Array` Any arguments that were passed when running the task.
+- data `Object` The configuration data for this task.
+- files `Array` The files that were configured for this task.
 
 #### task.run([arguments...], [done])
 Run the task with the given arguments. If the last argument is a function,
@@ -148,7 +152,7 @@ the callback, that actually runs the task.
 Clean up the task's `dest` files.
 
 **Options**
-- done `Function` A callback to be called once the task has finished.
+- done `Function` A callback to be called once all files have been removed.
 
 ## [License](LICENSE-MIT)
 
