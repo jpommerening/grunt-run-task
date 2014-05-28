@@ -24,7 +24,8 @@
     "grunt": "~0.4.4",
     "grunt-legacy-log": "~0.1.1",
     "readable-stream": "~1.1.13",
-    "inherits": "~2.0.1"
+    "inherits": "~2.0.1",
+    "rimraf": "~2.2.8"
   },
   "devDependencies": {
     "mocha": "~1.19.0",

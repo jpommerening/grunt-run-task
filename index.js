@@ -2,6 +2,7 @@ var grunt = require('grunt');
 var log = require('grunt-legacy-log');
 var stream = require('readable-stream');
 var inherits = require('inherits');
+var rimraf = require('rimraf');
 var multiTasks = [];
 
 function BufferStream(done, options) {
@@ -139,9 +140,23 @@ Task.prototype.clean = function(/* [files...], [done] */) {
   var task = this;
 
   function clean(done) {
+    var remain = task.files.length;
+
+    function one(err) {
+      if (err && remain > 0) {
+        remain = 0;
+        return done(err);
+      }
+
+      remain -= 1;
+      if (remain === 0) {
+        done();
+      }
+    }
+
     task.files.forEach(function (file) {
+      rimraf(file.dest, one);
     });
-    done();
   }
 
   if (typeof args[args.length-1] === 'function') {

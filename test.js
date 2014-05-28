@@ -30,7 +30,7 @@ describe('grunt-run-task', function () {
           test: true
         },
         files: {
-          'test/test.js': [ '*.js' ]
+          'tmp/test.js': [ '*.js' ]
         }
       }
     });
@@ -106,6 +106,43 @@ describe('grunt-run-task', function () {
         multiTask.fail('arg', function (err) {
           expect(called).to.equal(true);
           done(err);
+        });
+      });
+
+    });
+
+    describe('.clean([done])', function () {
+
+      it('removes multi-tasks\' dest files', function (done) {
+        var grunt = multiTask.grunt;
+
+        theTask.spy(function () {
+          this.files.forEach(function (file) {
+            grunt.file.write(file.dest, file.src.join(', '));
+          });
+        });
+
+        multiTask.run(function (err) {
+          if (err) {
+            return done(err);
+          }
+
+          var files = multiTask.files.map(function (file) {
+            return file.dest;
+          });
+
+          expect(files.length).to.be.greaterThan(0);
+
+          files.forEach(function (file) {
+            expect(grunt.file.exists(file)).to.equal(true);
+          });
+
+          multiTask.clean(function () {
+            files.forEach(function (file) {
+              expect(grunt.file.exists(file)).to.equal(false);
+            });
+            done();
+          });
         });
       });
 
