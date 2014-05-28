@@ -154,9 +154,13 @@ Task.prototype.clean = function(/* [files...], [done] */) {
       }
     }
 
-    task.files.forEach(function (file) {
-      rimraf(file.dest, one);
-    });
+    if (remain) {
+      task.files.forEach(function (file) {
+        rimraf(file.dest, one);
+      });
+    } else {
+      done();
+    }
   }
 
   if (typeof args[args.length-1] === 'function') {
