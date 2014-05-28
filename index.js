@@ -40,10 +40,10 @@ function Task(name, config) {
   this.grunt.log = new log.Log({muted: true});
   this.grunt.verbose = this.grunt.log.verbose;
   this.name = args.shift();
-  this.multi = multiTasks.indexOf(name) >= 0;
+  this.multi = multiTasks.indexOf(this.name) >= 0;
   this.target = this.multi ? args.shift() : null;
   this.args = args;
-  this.config = {};
+  this.data = {};
   this.files = [];
   this.stdout = null;
 
@@ -81,9 +81,9 @@ Task.prototype.run = function (/* [arguments...], done */) {
       }
     }
 
-    task.target = task.multi ? (tark.target || Object.keys(config)[0] || 'default') : null;
-    task.config = task.multi ? config[task.target] : config;
-    task.files = task.grunt.task.normalizeMultiTaskFiles(task.config);
+    task.target = task.multi ? (task.target || Object.keys(config)[0] || 'default') : null;
+    task.data = task.multi ? config[task.target] : config;
+    task.files = task.grunt.task.normalizeMultiTaskFiles(task.data, task.target);
 
     task.grunt.log.options.outStream = new BufferStream(function (err, data) {
       task.stdout = data;
@@ -139,7 +139,8 @@ Task.prototype.clean = function(/* [files...], [done] */) {
   var task = this;
 
   function clean(done) {
-    console.log(task.files);
+    task.files.forEach(function (file) {
+    });
     done();
   }
 
