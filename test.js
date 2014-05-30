@@ -14,18 +14,33 @@ describe('grunt-run-task', function () {
   var runTask = require('./index');
 
   describe('.registerTask(name, ...)', function () {
+    it('wraps grunt.registerTask(...)', function () {
+      expect(runTask.registerTask).to.be.a(Function);
+    });
   });
 
   describe('.registerMultiTask(name, ...)', function () {
+    it('wraps grunt.registerMultiTask(...)', function () {
+      expect(runTask.registerTask).to.be.a(Function);
+    });
   });
 
   describe('.renameTask(name, ...)', function () {
+    it('wraps grunt.renameTask(...)', function () {
+      expect(runTask.renameTask).to.be.a(Function);
+    });
   });
 
   describe('.loadTasks(tasksPath)', function () {
+    it('wraps grunt.loadTasks(...)', function () {
+      expect(runTask.loadTasks).to.be.a(Function);
+    });
   });
 
   describe('.loadNpmTasks(pluginName)', function () {
+    it('wraps grunt.loadNpmTasks(...)', function () {
+      expect(runTask.loadNpmTasks).to.be.a(Function);
+    });
   });
 
   describe('Task(name, [config])', function () {

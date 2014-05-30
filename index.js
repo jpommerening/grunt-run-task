@@ -23,12 +23,30 @@ function BufferStream(done, options) {
 }
 inherits(BufferStream, stream.Writable);
 
-grunt.registerMultiTask = (function (obj, method) {
-  return function (name) {
-    multiTasks.push(name);
-    method.apply(obj, arguments);
+function spy(obj, method, callback) {
+  return function () {
+    callback.apply(obj, arguments);
+    return method.apply(obj, arguments);
   };
-})(grunt.task, grunt.task.registerMultiTask);
+}
+
+grunt.registerMultiTask = spy(
+  grunt.task,
+  grunt.task.registerMultiTask,
+  function (name) {
+    multiTasks.push(name);
+  }
+);
+
+grunt.renameTask = spy(
+  grunt.task,
+  grunt.task.renameTask,
+  function (oldName, newName) {
+    if ((i = multiTasks.indexOf(oldName)) >= 0) {
+      multiTasks[i] = newName;
+    }
+  }
+);
 
 function Task(name, config) {
   if (!(this instanceof Task)) {
