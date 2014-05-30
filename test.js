@@ -13,10 +13,25 @@ theTask.spy = function (handler) {
 describe('grunt-run-task', function () {
   var runTask = require('./index');
 
-  runTask.registerTask('task', theTask);
-  runTask.registerMultiTask('multi-task', theTask);
+  describe('.registerTask(name, ...)', function () {
+  });
+
+  describe('.registerMultiTask(name, ...)', function () {
+  });
+
+  describe('.renameTask(name, ...)', function () {
+  });
+
+  describe('.loadTasks(tasksPath)', function () {
+  });
+
+  describe('.loadNpmTasks(pluginName)', function () {
+  });
 
   describe('Task(name, [config])', function () {
+
+    runTask.registerTask('task', theTask);
+    runTask.registerMultiTask('multi-task', theTask);
 
     var task = runTask.task('task', {
       options: {

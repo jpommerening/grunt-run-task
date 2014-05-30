@@ -107,6 +107,9 @@ _Wrapper for the [`grunt.registerTask`](http://gruntjs.com/api/grunt.task#grunt.
 ### runTask.registerMultiTask(taskName, ...)
 _Wrapper for the [`grunt.loadTasks`](http://gruntjs.com/api/grunt.task#grunt.task.registerMultiTask) method._
 
+### runTask.renameTask(oldTaskName, newTaskName)
+_Wrapper for the [`grunt.renameTask`](http://gruntjs.com/api/grunt.task#grunt.task.renameTask) method._
+
 ### runTask.loadTasks(tasksPath)
 _Wrapper for the [`grunt.loadTasks`](http://gruntjs.com/api/grunt.task#grunt.task.loadtasks) method._
 
