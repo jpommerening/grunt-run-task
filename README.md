@@ -3,16 +3,16 @@
 > Run Grunt tasks in you tests, so you can test them.
 
 So you want to test your Grunt tasks, eh? And you don't want to litter your
-project's _Gruntfile_ with tasks that are needed "just for the tests"? And
+project’s _Gruntfile_ with tasks that are needed “just for the tests”? And
 you want your tests to be self-contained? _Then this module is for you!_
 
 ## Whatsitdo?
 
 This package gives you the tools to run Grunt tasks inside your tests and
-clean up afterwards. You can use your test tool's setup and tear down methods
+clean up afterwards. You can use your test tool’s setup and tear down methods
 to run the Grunt task you want to test with arbitrary configuration.
 
-If you're using BDD it could look like this:
+If you’re using BDD it could look like this:
 
 ```javascript
 var assert = require('assert');
@@ -139,7 +139,7 @@ that actually runs the task.
 #### task.fail([arguments...], [done])
 Run the task with the given arguments, but expect it to fail. If the last
 argument is a function, run the task immediately and call the function once
-the task finished.  Otherwise, return a function expecting a single parameter,
+the task finished. Otherwise, return a function expecting a single parameter,
 the callback, that actually runs the task.
 
 **Options**
@@ -159,7 +159,7 @@ Clean up the task's `dest` files.
 Copyright © 2014 Jonas Pommerening
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
+this software and associated documentation files (the “Software”), to deal in
 the Software without restriction, including without limitation the rights to
 use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
 the Software, and to permit persons to whom the Software is furnished to do so,
@@ -168,7 +168,7 @@ subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
 FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
