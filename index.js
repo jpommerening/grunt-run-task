@@ -31,11 +31,11 @@ function spy(obj, method, callback) {
   };
 }
 
-spy(grunt, 'registerMultiTask', function (name) {
+grunt.registerMultiTask = spy(grunt.task, 'registerMultiTask', function (name) {
   multiTasks.push(name);
 });
 
-spy(grunt, 'renameTask', function (oldName, newName) {
+grunt.renameTask = spy(grunt.task, 'renameTask', function (oldName, newName) {
   if ((i = multiTasks.indexOf(oldName)) >= 0) {
     multiTasks[i] = newName;
   }
