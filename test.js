@@ -17,17 +17,30 @@ describe('grunt-run-task', function () {
     it('wraps grunt.registerTask(...)', function () {
       expect(runTask.registerTask).to.be.a(Function);
     });
+    it('can be used to register tasks', function () {
+      runTask.registerTask('test-task', 'Task description', theTask);
+    });
+    it('can be used to register alias-tasks', function () {
+      runTask.registerTask('test-alias', ['test-task']);
+    });
   });
 
   describe('.registerMultiTask(name, ...)', function () {
     it('wraps grunt.registerMultiTask(...)', function () {
-      expect(runTask.registerTask).to.be.a(Function);
+      expect(runTask.registerMultiTask).to.be.a(Function);
+    });
+    it('can be used to register multi-tasks', function () {
+      runTask.registerMultiTask('test-multi-task', 'Multi-task description', theTask);
     });
   });
 
   describe('.renameTask(name, ...)', function () {
     it('wraps grunt.renameTask(...)', function () {
       expect(runTask.renameTask).to.be.a(Function);
+    });
+    it('can be used to rename tasks', function () {
+      runTask.registerTask('test-old-task', 'Rename task description', theTask);
+      runTask.renameTask('test-old-task', 'test-new-task');
     });
   });
 
@@ -81,6 +94,8 @@ describe('grunt-run-task', function () {
           });
         });
 
+        expect(task.multi).to.be(false);
+
         task.run('arg', function (err) {
           expect(called).to.equal(true);
           done(err);
@@ -100,6 +115,8 @@ describe('grunt-run-task', function () {
             test: true
           });
         });
+
+        expect(multiTask.multi).to.be(true);
 
         multiTask.run('arg', function (err) {
           expect(called).to.equal(true);

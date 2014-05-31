@@ -24,29 +24,22 @@ function BufferStream(done, options) {
 inherits(BufferStream, stream.Writable);
 
 function spy(obj, method, callback) {
-  return function () {
+  var original = obj[method];
+  return obj[method] = function () {
     callback.apply(obj, arguments);
-    return method.apply(obj, arguments);
+    return original.apply(obj, arguments);
   };
 }
 
-grunt.registerMultiTask = spy(
-  grunt.task,
-  grunt.task.registerMultiTask,
-  function (name) {
-    multiTasks.push(name);
-  }
-);
+spy(grunt, 'registerMultiTask', function (name) {
+  multiTasks.push(name);
+});
 
-grunt.renameTask = spy(
-  grunt.task,
-  grunt.task.renameTask,
-  function (oldName, newName) {
-    if ((i = multiTasks.indexOf(oldName)) >= 0) {
-      multiTasks[i] = newName;
-    }
+spy(grunt, 'renameTask', function (oldName, newName) {
+  if ((i = multiTasks.indexOf(oldName)) >= 0) {
+    multiTasks[i] = newName;
   }
-);
+});
 
 function Task(name, config) {
   if (!(this instanceof Task)) {
