@@ -1,6 +1,6 @@
 {
   "name": "grunt-run-task",
-  "version": "0.1.0-rc2",
+  "version": "0.1.0-rc3",
   "description": "Run Grunt tasks in you tests, so you can test them",
   "license": "MIT",
   "keywords": [ "grunt", "run", "task", "test" ],
