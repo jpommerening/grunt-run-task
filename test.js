@@ -13,7 +13,13 @@ theTask.spy = function (handler) {
 describe('grunt-run-task', function () {
   var runTask = require('./index');
 
-  describe('.registerTask(name, ...)', function () {
+  describe('.initConfig(configObject)', function () {
+    it('wraps grunt.initConfig(...)', function () {
+      expect(runTask.initConfig).to.be.a(Function);
+    });
+  });
+
+  describe('.registerTask(taskName, ...)', function () {
     it('wraps grunt.registerTask(...)', function () {
       expect(runTask.registerTask).to.be.a(Function);
     });
@@ -25,7 +31,7 @@ describe('grunt-run-task', function () {
     });
   });
 
-  describe('.registerMultiTask(name, ...)', function () {
+  describe('.registerMultiTask(taskName, ...)', function () {
     it('wraps grunt.registerMultiTask(...)', function () {
       expect(runTask.registerMultiTask).to.be.a(Function);
     });
@@ -34,7 +40,7 @@ describe('grunt-run-task', function () {
     });
   });
 
-  describe('.renameTask(name, ...)', function () {
+  describe('.renameTask(oldTaskName, newTaskName)', function () {
     it('wraps grunt.renameTask(...)', function () {
       expect(runTask.renameTask).to.be.a(Function);
     });
