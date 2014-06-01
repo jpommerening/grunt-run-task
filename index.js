@@ -1,12 +1,13 @@
 var grunt = require('grunt');
 var log = require('grunt-legacy-log');
-var stream = require('readable-stream');
+var Writable = require('readable-stream').Writable;
+var EventEmitter2 = require('eventemitter2').EventEmitter2;
 var inherits = require('inherits');
 var rimraf = require('rimraf');
 var multiTasks = [];
 
 function BufferStream(done, options) {
-  stream.Writable.call(this, options);
+  Writable.call(this, options);
 
   var data = [];
 
@@ -21,7 +22,7 @@ function BufferStream(done, options) {
     done(err);
   });
 }
-inherits(BufferStream, stream.Writable);
+inherits(BufferStream, Writable);
 
 function spy(obj, method, callback) {
   var original = obj[method];
@@ -46,6 +47,8 @@ function Task(name, config) {
     return new Task(name, config);
   }
 
+  EventEmitter2.apply(this);
+
   var args = name.split(':');
 
   this.grunt = grunt;
@@ -61,6 +64,7 @@ function Task(name, config) {
 
   this.grunt.config.set(this.name, config || {});
 }
+inherits(Task, EventEmitter2);
 
 Task.prototype.run = function (/* [arguments...], done */) {
   var args = this.args.concat([].slice.apply(arguments));
@@ -80,6 +84,12 @@ Task.prototype.run = function (/* [arguments...], done */) {
     var config = task.grunt.config.get(task.name);
     var finished = false;
 
+    function any() {
+      var args = [].slice.apply(arguments);
+      args.unshift(this.event);
+      task.emit.apply(task, args);
+    }
+
     function end() {
       if (!finished) {
         finished = true;
@@ -88,6 +98,8 @@ Task.prototype.run = function (/* [arguments...], done */) {
         task.grunt.log.options.outStream = outStream;
         task.grunt.fail.warn = warn;
         task.grunt.fail.fatal = fatal;
+
+        task.grunt.event.offAny(any);
 
         done.apply(this, arguments);
       }
@@ -108,6 +120,8 @@ Task.prototype.run = function (/* [arguments...], done */) {
       error: end,
       done: end
     });
+
+    task.grunt.event.onAny(any);
 
     task.grunt.task.run(args.join(':'));
     task.grunt.task.start({asyncDone: true});

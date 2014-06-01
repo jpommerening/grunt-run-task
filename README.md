@@ -118,6 +118,10 @@ _Wrapper for the [`grunt.loadTasks`](http://gruntjs.com/api/grunt.task#grunt.tas
 
 ### Class: Task
 
+The task class implements the
+[EventEmitter2](https://github.com/asyncly/EventEmitter2) API. Any events that
+are emitted by Grunt _while your task runs_ are forwarded to the task class.
+
 #### Properties
 - name `String` The name of the task.
 - multi `Boolean` Whether this is a multi-task.
