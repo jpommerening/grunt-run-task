@@ -84,6 +84,11 @@ describe('grunt-run-task', function () {
       }
     });
 
+    it('is an instance of EventEmitter2', function () {
+      var EventEmitter2 = require('eventemitter2').EventEmitter2;
+      expect(task).to.be.an(EventEmitter2);
+    });
+
     describe('.run([arguments...], [done])', function () {
 
       it('runs tasks', function (done) {
