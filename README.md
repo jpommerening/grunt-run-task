@@ -3,16 +3,16 @@
 > Run Grunt tasks in you tests, so you can test them.
 
 So you want to test your Grunt tasks, eh? And you don't want to litter your
-project’s _Gruntfile_ with tasks that are needed “just for the tests”? And
+projectâ€™s _Gruntfile_ with tasks that are needed â€œjust for the testsâ€�? And
 you want your tests to be self-contained? _Then this module is for you!_
 
 ## Whatsitdo?
 
 This package gives you the tools to run Grunt tasks inside your tests and
-clean up afterwards. You can use your test tool’s setup and tear down methods
+clean up afterwards. You can use your test toolâ€™s setup and tear down methods
 to run the Grunt task you want to test with arbitrary configuration.
 
-If you’re using BDD it could look like this:
+If youâ€™re using BDD it could look like this:
 
 ```javascript
 var assert = require('assert');
@@ -116,6 +116,9 @@ _Wrapper for the [`grunt.loadTasks`](http://gruntjs.com/api/grunt.task#grunt.tas
 ### runTask.loadNpmTasks(pluginName)
 _Wrapper for the [`grunt.loadTasks`](http://gruntjs.com/api/grunt.task#grunt.task.loadtasks) method._
 
+### runTask.option(pluginName)
+_Wrapper for the [`grunt.option`](http://gruntjs.com/api/grunt.option) method._
+
 ### Class: Task
 
 The task class implements the
@@ -163,10 +166,10 @@ Clean up the task's `dest` files.
 
 ## [License](LICENSE-MIT)
 
-Copyright © 2014 Jonas Pommerening
+Copyright Â© 2014 Jonas Pommerening
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the “Software”), to deal in
+this software and associated documentation files (the â€œSoftwareâ€�), to deal in
 the Software without restriction, including without limitation the rights to
 use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
 the Software, and to permit persons to whom the Software is furnished to do so,
@@ -175,7 +178,7 @@ subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+THE SOFTWARE IS PROVIDED â€œAS ISâ€�, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
 FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
