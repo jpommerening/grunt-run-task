@@ -211,6 +211,7 @@ runTask.task = function create(name, config) {
   'registerMultiTask',
   'renameTask',
   'loadTasks',
+  'option',
   'loadNpmTasks' ].forEach(function (fn) {
   runTask[fn] = grunt[fn].bind(grunt);
 });
