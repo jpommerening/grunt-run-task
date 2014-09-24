@@ -217,4 +217,9 @@ runTask.task = function create(name, config) {
   runTask[fn] = grunt[fn].bind(grunt);
 });
 
+/* load this module's task */
+if( grunt.file.exists( 'tasks' ) ) {
+  runTask.loadTasks( 'tasks' );
+}
+
 module.exports = runTask;
