@@ -55,14 +55,13 @@ function Task(name, config) {
   this.grunt.log = new log.Log({muted: true});
   this.grunt.verbose = this.grunt.log.verbose;
   this.name = args.shift();
+  this.config = config;
   this.multi = multiTasks.indexOf(this.name) >= 0;
   this.target = this.multi ? args.shift() : null;
   this.args = args;
   this.data = {};
   this.files = [];
   this.stdout = null;
-
-  this.grunt.config.set(this.name, config || {});
 }
 inherits(Task, EventEmitter2);
 
@@ -81,7 +80,7 @@ Task.prototype.run = function (/* [arguments...], done */) {
     var warn = task.grunt.fail.warn;
     var fatal = task.grunt.fail.fatal;
     var outStream = task.grunt.log.options.outStream;
-    var config = task.grunt.config.get(task.name);
+    var config = task.config || {};
     var finished = false;
 
     function any() {
@@ -105,6 +104,8 @@ Task.prototype.run = function (/* [arguments...], done */) {
       }
     }
 
+    task.grunt.config.set(task.name, config);
+    config = task.grunt.config.get(task.name);
     task.target = task.multi ? (task.target || Object.keys(config)[0] || 'default') : null;
     task.data = task.multi ? config[task.target] : config;
     task.files = task.grunt.task.normalizeMultiTaskFiles(task.data, task.target);
