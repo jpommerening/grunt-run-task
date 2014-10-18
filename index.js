@@ -1,4 +1,8 @@
-var grunt = require('grunt');
+/*jshint node: true*/
+'use strict';
+
+var forceRequire = require('./require');
+var grunt = forceRequire('grunt', require);
 var log = require('grunt-legacy-log');
 var Writable = require('readable-stream').Writable;
 var EventEmitter2 = require('eventemitter2').EventEmitter2;
@@ -26,10 +30,10 @@ inherits(BufferStream, Writable);
 
 function spy(obj, method, callback) {
   var original = obj[method];
-  return obj[method] = function () {
+  return (obj[method] = function () {
     callback.apply(obj, arguments);
     return original.apply(obj, arguments);
-  };
+  });
 }
 
 grunt.registerMultiTask = spy(grunt.task, 'registerMultiTask', function (name) {
@@ -37,6 +41,7 @@ grunt.registerMultiTask = spy(grunt.task, 'registerMultiTask', function (name) {
 });
 
 grunt.renameTask = spy(grunt.task, 'renameTask', function (oldName, newName) {
+  var i;
   if ((i = multiTasks.indexOf(oldName)) >= 0) {
     multiTasks[i] = newName;
   }
@@ -83,6 +88,7 @@ Task.prototype.run = function (/* [arguments...], done */) {
     var config = task.config || {};
     var finished = false;
 
+    /*jshint validthis: true*/
     function any() {
       var args = [].slice.apply(arguments);
       args.unshift(this.event);
@@ -100,7 +106,7 @@ Task.prototype.run = function (/* [arguments...], done */) {
 
         task.grunt.event.offAny(any);
 
-        done.apply(this, arguments);
+        done.apply(task, arguments);
       }
     }
 
