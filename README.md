@@ -39,6 +39,12 @@ describe('my awesome Grunt task', function () {
 });
 ```
 
+## Installation
+
+```
+npm install --save-dev grunt-run-task
+```
+
 ## API
 
 ### runTask(name, config, done)

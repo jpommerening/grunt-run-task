@@ -3,3 +3,12 @@ node_js:
   - "0.11"
   - "0.10"
   - "0.8"
+env:
+  - GRUNT=0.4.5
+  - GRUNT=0.4.4
+  - GRUNT=0.4.3
+  - GRUNT=0.4.2
+  - GRUNT=0.4.1
+  - GRUNT=0.4.0
+install:
+  - npm install "grunt@$GRUNT"
