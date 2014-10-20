@@ -10,6 +10,5 @@ env:
   - GRUNT=0.4.2
   - GRUNT=0.4.1
   - GRUNT=0.4.0
-install:
-  - npm install
+before_script:
   - npm install "grunt@$GRUNT"
