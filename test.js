@@ -40,6 +40,15 @@ describe('grunt-run-task', function () {
     });
   });
 
+  describe('.registerInitTask(taskName, ...)', function () {
+    it('wraps grunt.registerInitTask(...)', function () {
+      expect(runTask.registerInitTask).to.be.a(Function);
+    });
+    it('can be used to register init-tasks', function () {
+      runTask.registerInitTask('test-init-task', 'Init-task description', theTask);
+    });
+  });
+
   describe('.renameTask(oldTaskName, newTaskName)', function () {
     it('wraps grunt.renameTask(...)', function () {
       expect(runTask.renameTask).to.be.a(Function);
@@ -186,7 +195,7 @@ describe('grunt-run-task', function () {
           }
 
           var files = multiTask.files.map(function (file) {
-            return file.dest;
+            return file;
           });
 
           expect(files.length).to.be.greaterThan(0);

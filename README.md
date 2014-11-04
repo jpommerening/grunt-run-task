@@ -111,7 +111,10 @@ _Wrapper for the [`grunt.initConfig`](http://gruntjs.com/api/grunt.config#grunt.
 _Wrapper for the [`grunt.registerTask`](http://gruntjs.com/api/grunt.task#grunt.task.registerTask) method._
 
 ### runTask.registerMultiTask(taskName, ...)
-_Wrapper for the [`grunt.loadTasks`](http://gruntjs.com/api/grunt.task#grunt.task.registerMultiTask) method._
+_Wrapper for the [`grunt.registerMultiTask`](http://gruntjs.com/api/grunt.task#grunt.task.registerMultiTask) method._
+
+### runTask.registerInitTask(taskName, ...)
+_Wrapper for the [`grunt.registerInitTask`](http://gruntjs.com/api/grunt.task#grunt.task.registerInitTask) method._
 
 ### runTask.renameTask(oldTaskName, newTaskName)
 _Wrapper for the [`grunt.renameTask`](http://gruntjs.com/api/grunt.task#grunt.task.renameTask) method._
@@ -134,11 +137,11 @@ are emitted by Grunt _while your task runs_ are forwarded to the task class.
 #### Properties
 - name `String` The name of the task.
 - multi `Boolean` Whether this is a multi-task.
+- init `Boolean` Whether this is a init-task
 - target `String` If the task is a multi-task, this is the target name it was
-  started with.
-- args `Array` Any arguments that were passed when running the task.
-- data `Object` The configuration data for this task.
-- files `Array` The files that were configured for this task.
+  created with.
+- args `Array` Any arguments that were passed when creating the task.
+- files `Array` The destination files that this task (might have) created.
 
 #### task.run([arguments...], [done])
 Run the task with the given arguments. If the last argument is a function,

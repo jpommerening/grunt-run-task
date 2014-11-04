@@ -8,7 +8,9 @@ var Writable = require('readable-stream').Writable;
 var EventEmitter2 = require('eventemitter2').EventEmitter2;
 var inherits = require('inherits');
 var rimraf = require('rimraf');
+
 var multiTasks = [];
+var initTasks = [];
 
 function BufferStream(done, options) {
   Writable.call(this, options);
@@ -40,10 +42,17 @@ grunt.registerMultiTask = spy(grunt.task, 'registerMultiTask', function (name) {
   multiTasks.push(name);
 });
 
+grunt.registerInitTask = spy(grunt.task, 'registerInitTask', function (name) {
+  initTasks.push(name);
+});
+
 grunt.renameTask = spy(grunt.task, 'renameTask', function (oldName, newName) {
   var i;
   if ((i = multiTasks.indexOf(oldName)) >= 0) {
     multiTasks[i] = newName;
+  }
+  if ((i = initTasks.indexOf(oldName)) >= 0) {
+    initTasks[i] = newName;
   }
 });
 
@@ -62,9 +71,9 @@ function Task(name, config) {
   this.name = args.shift();
   this.config = config;
   this.multi = multiTasks.indexOf(this.name) >= 0;
+  this.init = initTasks.indexOf(this.name) >= 0;
   this.target = this.multi ? args.shift() : null;
   this.args = args;
-  this.data = {};
   this.files = [];
   this.stdout = null;
 }
@@ -73,19 +82,17 @@ inherits(Task, EventEmitter2);
 Task.prototype.run = function (/* [arguments...], done */) {
   var args = this.args.concat([].slice.apply(arguments));
   var task = this;
+  var grunt = task.grunt;
 
-  if (task.target) {
-    args.unshift(task.target);
-  } else if (task.multi) {
-    args.unshift('');
-  }
-  args.unshift(task.name);
 
   function run(done) {
-    var warn = task.grunt.fail.warn;
-    var fatal = task.grunt.fail.fatal;
-    var outStream = task.grunt.log.options.outStream;
+    var warn = grunt.fail.warn;
+    var fatal = grunt.fail.fatal;
+    var outStream = grunt.log.options.outStream;
+    var name = task.name;
+    var target;
     var config;
+    var data;
     var finished = false;
 
     /*jshint validthis: true*/
@@ -99,41 +106,49 @@ Task.prototype.run = function (/* [arguments...], done */) {
       if (!finished) {
         finished = true;
 
-        task.grunt.log.options.outStream.end();
-        task.grunt.log.options.outStream = outStream;
-        task.grunt.fail.warn = warn;
-        task.grunt.fail.fatal = fatal;
+        grunt.log.options.outStream.end();
+        grunt.log.options.outStream = outStream;
+        grunt.fail.warn = warn;
+        grunt.fail.fatal = fatal;
 
-        task.grunt.event.offAny(any);
+        grunt.event.offAny(any);
 
         done.apply(task, arguments);
       }
     }
 
     if (task.config) {
-      task.grunt.config.set(task.name, task.config);
+      grunt.config.set(name, task.config);
     }
-    config = task.grunt.config.get(task.name);
-    task.target = task.multi ? (task.target || Object.keys(config)[0] || 'default') : null;
-    task.data = task.multi ? config[task.target] : config;
-    task.files = task.grunt.task.normalizeMultiTaskFiles(task.data, task.target);
 
-    task.grunt.log.options.outStream = new BufferStream(function (err, data) {
+    grunt.log.options.outStream = new BufferStream(function (err, data) {
       task.stdout = data;
     });
 
-    task.grunt.fail.warn = end;
-    task.grunt.fail.fatal = end;
+    grunt.fail.warn = end;
+    grunt.fail.fatal = end;
 
-    task.grunt.task.options({
+    grunt.task.options({
       error: end,
       done: end
     });
 
-    task.grunt.event.onAny(any);
+    grunt.event.onAny(any);
 
-    task.grunt.task.run(args.join(':'));
-    task.grunt.task.start({asyncDone: true});
+    if (task.multi) {
+      target = task.target || Object.keys(config)[0] || 'default';
+      data = grunt.config.get([name, target]);
+      args.unshift(name, target);
+      grunt.task.normalizeMultiTaskFiles(data, target).forEach(function (file) {
+        task.files.push(file.dest);
+      });
+    } else {
+      data = grunt.config.get([name]);
+      args.unshift(name);
+    }
+
+    grunt.task.run(args.join(':'));
+    grunt.task.start({asyncDone: true});
   }
 
   if (typeof args[args.length-1] === 'function') {
@@ -174,7 +189,8 @@ Task.prototype.clean = function(/* [files...], [done] */) {
   var task = this;
 
   function clean(done) {
-    var remain = task.files.length;
+    var files = task.files;
+    var remain = files.length;
 
     function one(err) {
       if (err && remain > 0) {
@@ -189,8 +205,9 @@ Task.prototype.clean = function(/* [files...], [done] */) {
     }
 
     if (remain) {
-      task.files.forEach(function (file) {
-        rimraf(file.dest, one);
+      task.files = [];
+      files.forEach(function (file) {
+        rimraf(file, one);
       });
     } else {
       done();
@@ -218,6 +235,7 @@ runTask.task = function create(name, config) {
 [ 'initConfig',
   'registerTask',
   'registerMultiTask',
+  'registerInitTask',
   'renameTask',
   'loadTasks',
   'option',
