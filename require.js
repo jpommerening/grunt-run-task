@@ -1,15 +1,6 @@
 /*jshint node: true*/
 'use strict';
 
-module.exports = function forceRequire(module, require) {
-  var cache = extract(require.cache);
-  var file = require.resolve(module);
-  var exports = require(module);
-  delete require.cache[file];
-  update(require.cache, cache);
-  return exports;
-};
-
 function extract(object) {
   var values = Object.create(null);
   Object.keys(object).forEach(function (key) {
@@ -25,3 +16,12 @@ function update(object, values) {
   });
   return object;
 }
+
+module.exports = function forceRequire(module, require) {
+  var cache = extract(require.cache);
+  var file = require.resolve(module);
+  var exports = require(module);
+  delete require.cache[file];
+  update(require.cache, cache);
+  return exports;
+};

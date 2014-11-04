@@ -1,0 +1,17 @@
+{
+  "node": true,
+
+  "boss": true,
+  "curly": true,
+  "eqeqeq": true,
+  "eqnull": true,
+  "immed": true,
+  "indent": 2,
+  "latedef": true,
+  "newcap": true,
+  "noarg": true,
+  "sub": true,
+  "trailing": true,
+  "undef": true,
+  "unused": true
+}

@@ -1,3 +1,5 @@
+/*jshint node: true*/
+/*global describe, it*/
 var expect = require('expect.js');
 
 function theTask() {
