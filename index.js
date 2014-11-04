@@ -85,7 +85,7 @@ Task.prototype.run = function (/* [arguments...], done */) {
     var warn = task.grunt.fail.warn;
     var fatal = task.grunt.fail.fatal;
     var outStream = task.grunt.log.options.outStream;
-    var config = task.config || {};
+    var config;
     var finished = false;
 
     /*jshint validthis: true*/
@@ -110,7 +110,9 @@ Task.prototype.run = function (/* [arguments...], done */) {
       }
     }
 
-    task.grunt.config.set(task.name, config);
+    if (task.config) {
+      task.grunt.config.set(task.name, task.config);
+    }
     config = task.grunt.config.get(task.name);
     task.target = task.multi ? (task.target || Object.keys(config)[0] || 'default') : null;
     task.data = task.multi ? config[task.target] : config;
