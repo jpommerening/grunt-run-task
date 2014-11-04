@@ -11,6 +11,6 @@ env:
   - GRUNT=0.4.1
   - GRUNT=0.4.0
 before_install:
-  - "[ ${TRAVIS_NODE_VERSION} = 0.8 ] && sed -i '/grunt-contrib-jshint/ d' package.json || true"
+  - "[ ${TRAVIS_NODE_VERSION} = 0.8 ] && sed -i '/jshint/ d' package.json || true"
 before_script:
   - npm install "grunt@$GRUNT"

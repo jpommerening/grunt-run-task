@@ -21,7 +21,8 @@
     "url": "https://github.com/jpommerening/grunt-run-task/issues"
   },
   "scripts": {
-    "test": "mocha --reporter spec test.js && jshint index.js require.js test.js"
+    "posttest": "jshint index.js require.js test.js",
+    "test": "mocha --reporter spec test.js"
   },
   "dependencies": {
     "grunt": "~0.4.0",
