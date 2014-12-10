@@ -91,7 +91,6 @@ Task.prototype.run = function (/* [arguments...], done */) {
     var outStream = grunt.log.options.outStream;
     var name = task.name;
     var target;
-    var config;
     var data;
     var finished = false;
 
@@ -136,7 +135,7 @@ Task.prototype.run = function (/* [arguments...], done */) {
     grunt.event.onAny(any);
 
     if (task.multi) {
-      target = task.target || Object.keys(config)[0] || 'default';
+      target = task.target || Object.keys(task.config)[0] || 'default';
       data = grunt.config.get([name, target]);
       args.unshift(name, target);
       grunt.task.normalizeMultiTaskFiles(data, target).forEach(function (file) {

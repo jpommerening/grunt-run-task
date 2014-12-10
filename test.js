@@ -12,8 +12,22 @@ theTask.spy = function (handler) {
   theTask.handler = handler;
 };
 
-describe('grunt-run-task', function () {
+describe('runTask(name, config, done)', function () {
   var runTask = require('./index');
+
+  it('is a function', function () {
+    expect(runTask).to.be.a(Function);
+  });
+
+  it('runs tasks', function (done) {
+    runTask.registerTask('task', theTask);
+    runTask('task', {}, done);
+  });
+
+  it('runs multi tasks', function (done) {
+    runTask.registerMultiTask('multi-task', theTask);
+    runTask('multi-task', { default: {} }, done);
+  });
 
   describe('.initConfig(configObject)', function () {
     it('wraps grunt.initConfig(...)', function () {
