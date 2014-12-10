@@ -21,11 +21,19 @@ describe('runTask(name, config, done)', function () {
 
   it('runs tasks', function (done) {
     runTask.registerTask('task', theTask);
+    theTask.spy(function( ) {
+      expect(this.name).to.equal('task');
+      expect(this.target).to.be(undefined);
+    });
     runTask('task', {}, done);
   });
 
   it('runs multi tasks', function (done) {
     runTask.registerMultiTask('multi-task', theTask);
+    theTask.spy(function( ) {
+      expect(this.name).to.equal('multi-task');
+      expect(this.target).to.equal('default');
+    });
     runTask('multi-task', { default: {} }, done);
   });
 
