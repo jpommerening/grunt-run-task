@@ -12,8 +12,30 @@ theTask.spy = function (handler) {
   theTask.handler = handler;
 };
 
-describe('grunt-run-task', function () {
+describe('runTask(name, config, done)', function () {
   var runTask = require('./index');
+
+  it('is a function', function () {
+    expect(runTask).to.be.a(Function);
+  });
+
+  it('runs tasks', function (done) {
+    runTask.registerTask('task', theTask);
+    theTask.spy(function( ) {
+      expect(this.name).to.equal('task');
+      expect(this.target).to.be(undefined);
+    });
+    runTask('task', {}, done);
+  });
+
+  it('runs multi tasks', function (done) {
+    runTask.registerMultiTask('multi-task', theTask);
+    theTask.spy(function( ) {
+      expect(this.name).to.equal('multi-task');
+      expect(this.target).to.equal('default');
+    });
+    runTask('multi-task', { default: {} }, done);
+  });
 
   describe('.initConfig(configObject)', function () {
     it('wraps grunt.initConfig(...)', function () {
