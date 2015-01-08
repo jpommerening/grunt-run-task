@@ -147,7 +147,7 @@ Task.prototype.run = function (/* [arguments...], done */) {
     }
 
     grunt.task.run(args.join(':'));
-    grunt.task.start({asyncDone: true});
+    grunt.task.start({asyncDone: false});
   }
 
   if (typeof args[args.length-1] === 'function') {
