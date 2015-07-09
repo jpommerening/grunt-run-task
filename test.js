@@ -37,12 +37,23 @@ describe('runTask(name, config, done)', function () {
     runTask('multi-task', { default: {} }, done);
   });
 
-  it('exposes the task\'s grunt', function () {
-    expect(runTask.grunt).to.be.an(Object);
-    expect(runTask.grunt.file).to.be.an(Object);
-    expect(runTask.grunt.config).to.be.a(Function);
-    expect(runTask.grunt.task).to.be.an(Object);
-    expect(runTask.grunt.log).to.be.an(Object);
+  describe('.grunt', function () {
+    it('exposes the task\'s grunt', function () {
+      expect(runTask.grunt).to.be.an(Object);
+      expect(runTask.grunt.file).to.be.an(Object);
+      expect(runTask.grunt.config).to.be.a(Function);
+      expect(runTask.grunt.task).to.be.an(Object);
+      expect(runTask.grunt.log).to.be.an(Object);
+    });
+
+    it('is an instance isolated from other module\'s grunt', function () {
+      var grunt = require('grunt');
+      expect(runTask.grunt).to.not.be(grunt);
+
+      runTask.grunt.config.set('test', true);
+
+      expect(grunt.config.get('test')).to.not.be(true);
+    });
   });
 
   describe('.initConfig(configObject)', function () {

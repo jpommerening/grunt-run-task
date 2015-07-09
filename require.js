@@ -10,6 +10,12 @@ function extract(object) {
   return values;
 }
 
+function clear(object) {
+  Object.keys(object).forEach(function (key) {
+    delete object[key];
+  });
+}
+
 function update(object, values) {
   Object.keys(values).forEach(function (key) {
     object[key] = values[key];
@@ -19,9 +25,8 @@ function update(object, values) {
 
 module.exports = function forceRequire(module, require) {
   var cache = extract(require.cache);
-  var file = require.resolve(module);
   var exports = require(module);
-  delete require.cache[file];
+  clear(require.cache);
   update(require.cache, cache);
   return exports;
 };
