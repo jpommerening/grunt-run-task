@@ -12,13 +12,13 @@ env:
   - GRUNT=0.4.1
   - GRUNT=0.4.0
 before_install:
-- "[ ${TRAVIS_NODE_VERSION} = 0.8 ] && sed -i '/jshint/ d' package.json || true"
+- '[ ${TRAVIS_NODE_VERSION} = 0.8 ] && sed -i ''/jshint/ d'' package.json || true'
 before_script:
 - npm install "grunt@$GRUNT"
 deploy:
   provider: npm
   email: jonas.pommerening@gmail.com
   api_key:
-    secure: lXIltshZnaHeSMyu6qN7HhgnyEvZiio5y56+zfSFj+dzM3Dcu9GXv2v3/qGz3YYyuJaxYGwSNT03fRpvmiDQJswgXxqU2Mg9i9JwY5r6p4rK3dmeVwF+qzIeWMjCl5PTMtkNAvz8ehqWXj/S1/qELnfooGvLZJtmN0KVPQPNfU8=
+    secure: HdtTKbiyWJf+2ipnew34/OVr+TWBY70ggoqteFTTGMEbFvDC0gkzSXHlZDvVwuuanwVphz9KpwbeAJuQysiE/gyomxj2j0azgjaH1XepdtHPnJhWSrx5jtrHXy/ACHfi/zjcqIuHCDDeuW94G17W6TPsXGZyVsd4GvtMkKD9k50=
   on:
     tags: true
