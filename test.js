@@ -38,11 +38,11 @@ describe('runTask(name, config, done)', function () {
   });
 
   it('exposes the task\'s grunt', function () {
-    expect(runTask.grunt).to.be.a(Object);
-    expect(runTask.grunt.file).to.be.a(Object);
+    expect(runTask.grunt).to.be.an(Object);
+    expect(runTask.grunt.file).to.be.an(Object);
     expect(runTask.grunt.config).to.be.a(Function);
-    expect(runTask.grunt.task).to.be.a(Object);
-    expect(runTask.grunt.log).to.be.a(Object);
+    expect(runTask.grunt.task).to.be.an(Object);
+    expect(runTask.grunt.log).to.be.an(Object);
   });
 
   describe('.initConfig(configObject)', function () {
