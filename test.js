@@ -37,6 +37,14 @@ describe('runTask(name, config, done)', function () {
     runTask('multi-task', { default: {} }, done);
   });
 
+  it('exposes the task\'s grunt', function () {
+    expect(runTask.grunt).to.be.a(Object);
+    expect(runTask.grunt.file).to.be.a(Object);
+    expect(runTask.grunt.config).to.be.a(Function);
+    expect(runTask.grunt.task).to.be.a(Object);
+    expect(runTask.grunt.log).to.be.a(Object);
+  });
+
   describe('.initConfig(configObject)', function () {
     it('wraps grunt.initConfig(...)', function () {
       expect(runTask.initConfig).to.be.a(Function);
