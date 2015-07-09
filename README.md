@@ -107,6 +107,13 @@ task.run('default', function (err) {
 });
 ```
 
+### runTask.grunt
+The (internal) _Grunt_ instance used for running your tasks. You can use this if
+you want to test if your task called the Grunt API or modified some configuration
+entries.
+This will **not** be the same instance you would obtain with `require('grunt')`.
+
+
 ### runTask.initConfig(configObject)
 _Wrapper for the [`grunt.initConfig`](http://gruntjs.com/api/grunt.config#grunt.config.init) method._
 
