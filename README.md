@@ -41,8 +41,8 @@ describe('my awesome Grunt task', function () {
 
 ## Installation
 This module is [tested](https://travis-ci.org/jpommerening/grunt-run-task) with
-[Grunt](http://gruntjs.com) _0.4.x_ and [Node.js](http://nodejs.org) _0.8.x_,
-_0.10.x_ and _0.11.x_. Use `npm` to install it:
+[Grunt](http://gruntjs.com) _0.4.x_ and [Node.js](http://nodejs.org)
+_0.10.x_, _0.11.x_ and _0.12.x_. Use `npm` to install it:
 
 ```
 npm install --save-dev grunt-run-task
