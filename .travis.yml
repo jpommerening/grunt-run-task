@@ -1,9 +1,10 @@
 language: node_js
 node_js:
-  - "0.11"
-  - "0.10"
-  - "0.8"
+- '0.12'
+- '0.11'
+- '0.10'
 env:
+  matrix:
   - GRUNT=0.4.5
   - GRUNT=0.4.4
   - GRUNT=0.4.3
@@ -11,6 +12,13 @@ env:
   - GRUNT=0.4.1
   - GRUNT=0.4.0
 before_install:
-  - "[ ${TRAVIS_NODE_VERSION} = 0.8 ] && sed -i '/jshint/ d' package.json || true"
+- "[ ${TRAVIS_NODE_VERSION} = 0.8 ] && sed -i '/jshint/ d' package.json || true"
 before_script:
-  - npm install "grunt@$GRUNT"
+- npm install "grunt@$GRUNT"
+deploy:
+  provider: npm
+  email: jonas.pommerening@gmail.com
+  api_key:
+    secure: lXIltshZnaHeSMyu6qN7HhgnyEvZiio5y56+zfSFj+dzM3Dcu9GXv2v3/qGz3YYyuJaxYGwSNT03fRpvmiDQJswgXxqU2Mg9i9JwY5r6p4rK3dmeVwF+qzIeWMjCl5PTMtkNAvz8ehqWXj/S1/qELnfooGvLZJtmN0KVPQPNfU8=
+  on:
+    tags: true
