@@ -1,6 +1,6 @@
 {
   "name": "grunt-run-task",
-  "version": "0.2.0",
+  "version": "1.0.0-rc1",
   "description": "Run Grunt tasks in you tests, so you can test them",
   "license": "MIT",
   "keywords": [ "grunt", "run", "task", "test" ],
@@ -26,8 +26,8 @@
     "test": "mocha --reporter spec test.js"
   },
   "dependencies": {
-    "grunt": "~0.4.0",
-    "grunt-legacy-log": "~0.1.1",
+    "grunt": "^1.0.0-rc1",
+    "grunt-legacy-log": "~1.0.0-rc1",
     "readable-stream": "~1.1.13",
     "eventemitter2": "~0.4.13",
     "inherits": "~2.0.1",
